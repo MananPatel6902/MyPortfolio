@@ -9,46 +9,19 @@ const Contact: React.FC = () => {
     subject: '',
     message: ''
   });
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formStatus, setFormStatus] = useState<{type: 'success' | 'error' | null, message: string}>({
+  const [formStatus, setFormStatus] = useState<{ type: 'success' | 'error' | null; message: string }>({
     type: null,
     message: ''
   });
-  
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
-  };
-  
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setFormStatus({
-        type: 'success',
-        message: 'Your message has been sent! I will get back to you soon.'
-      });
-      
-      setFormData({
-        name: '',
-        email: '',
-        subject: '',
-        message: ''
-      });
-      
-      setTimeout(() => {
-        setFormStatus({
-          type: null,
-          message: ''
-        });
-      }, 5000);
-    }, 1500);
   };
 
   const iconMap: Record<string, React.ElementType> = {
@@ -65,18 +38,18 @@ const Contact: React.FC = () => {
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Get In Touch</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Interested in discussing a project, opportunity, or just want to connect? 
+            Interested in discussing a project, opportunity, or just want to connect?
             Feel free to reach out through the form below or via my social media channels.
           </p>
         </div>
-        
+
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Contact Information */}
+            {/* Contact Info */}
             <div className="md:col-span-1">
               <div className="bg-gray-50 p-6 rounded-xl shadow-md h-full">
                 <h3 className="text-xl font-bold mb-6 text-gray-800">Contact Information</h3>
-                
+
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
                     <div className="bg-blue-100 p-3 rounded-lg text-blue-600">
@@ -84,15 +57,12 @@ const Contact: React.FC = () => {
                     </div>
                     <div>
                       <p className="font-medium text-gray-800">Email</p>
-                      <a 
-                        href="mailto:manan06092002@gmail.com" 
-                        className="text-gray-600 hover:text-blue-600 transition-colors"
-                      >
+                      <a href="mailto:manan06092002@gmail.com" className="text-gray-600 hover:text-blue-600 transition-colors">
                         manan06092002@gmail.com
                       </a>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start gap-4">
                     <div className="bg-blue-100 p-3 rounded-lg text-blue-600">
                       <Phone size={20} />
@@ -102,7 +72,7 @@ const Contact: React.FC = () => {
                       <p className="text-gray-600">+91 97378 30063</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start gap-4">
                     <div className="bg-blue-100 p-3 rounded-lg text-blue-600">
                       <MapPin size={20} />
@@ -113,7 +83,7 @@ const Contact: React.FC = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Social Links */}
                 <div className="mt-8">
                   <p className="font-medium text-gray-800 mb-4">Connect With Me</p>
@@ -137,13 +107,25 @@ const Contact: React.FC = () => {
                 </div>
               </div>
             </div>
-            
+
             {/* Contact Form */}
             <div className="md:col-span-2">
               <div className="bg-gray-50 p-6 rounded-xl shadow-md">
                 <h3 className="text-xl font-bold mb-6 text-gray-800">Send Me a Message</h3>
-                
-                <form onSubmit={handleSubmit}>
+
+                <form
+                  name="contact"
+                  method="POST"
+                  data-netlify="true"
+                  data-netlify-honeypot="bot-field"
+                >
+                  <input type="hidden" name="form-name" value="contact" />
+                  <p className="hidden">
+                    <label>
+                      Don’t fill this out if you’re human: <input name="bot-field" />
+                    </label>
+                  </p>
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                     <div>
                       <label htmlFor="name" className="block text-gray-700 mb-2">Your Name</label>
@@ -158,7 +140,7 @@ const Contact: React.FC = () => {
                         placeholder="Manan Patel"
                       />
                     </div>
-                    
+
                     <div>
                       <label htmlFor="email" className="block text-gray-700 mb-2">Your Email</label>
                       <input
@@ -173,7 +155,7 @@ const Contact: React.FC = () => {
                       />
                     </div>
                   </div>
-                  
+
                   <div className="mb-6">
                     <label htmlFor="subject" className="block text-gray-700 mb-2">Subject</label>
                     <input
@@ -187,7 +169,7 @@ const Contact: React.FC = () => {
                       placeholder="Project Inquiry"
                     />
                   </div>
-                  
+
                   <div className="mb-6">
                     <label htmlFor="message" className="block text-gray-700 mb-2">Message</label>
                     <textarea
@@ -201,35 +183,14 @@ const Contact: React.FC = () => {
                       placeholder="Your message here..."
                     ></textarea>
                   </div>
-                  
-                  {formStatus.type && (
-                    <div 
-                      className={`mb-6 p-4 rounded-lg ${
-                        formStatus.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                      }`}
-                    >
-                      {formStatus.message}
-                    </div>
-                  )}
-                  
+
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className={`px-6 py-3 bg-blue-600 text-white rounded-lg font-medium flex items-center justify-center gap-2 transition-all ${
-                      isSubmitting ? 'opacity-70 cursor-not-allowed' : 'hover:bg-blue-700'
-                    }`}
+                    className={`px-6 py-3 bg-blue-600 text-white rounded-lg font-medium flex items-center justify-center gap-2 transition-all ${isSubmitting ? 'opacity-70 cursor-not-allowed' : 'hover:bg-blue-700'}`}
                   >
-                    {isSubmitting ? (
-                      <>
-                        <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full"></div>
-                        Sending...
-                      </>
-                    ) : (
-                      <>
-                        <Send size={18} />
-                        Send Message
-                      </>
-                    )}
+                    <Send size={18} />
+                    Send Message
                   </button>
                 </form>
               </div>
