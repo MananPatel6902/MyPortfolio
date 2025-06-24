@@ -14,7 +14,7 @@ export const projectsData: Project[] = [
     id: 2,
     title: "Virtual Mouse",
     description: "Hands-free virtual mouse controlled by real-time hand gestures using computer vision.",
-    image: "/Photos/virtual-mouse.png",
+    image: "/Photos/Virtual mouse.png",
     tags: ["Computer Vision", "OpenCV", "Mediapipe", "Gesture Recognition"],
     github: "https://github.com/MananPatel6902/Virtual-AI-mouse",
     details: "This project implements a virtual mouse using real-time hand gesture detection with Mediapipe and OpenCV. Achieves 95% accuracy in gesture recognition to emulate mouse actions like move, click, drag, and scroll. Built using Python with an emphasis on user-friendly and reliable control mechanisms for accessibility and automation."
