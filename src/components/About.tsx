@@ -13,7 +13,7 @@ const About: React.FC = () => {
                 <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl blur opacity-30 group-hover:opacity-100 transition duration-1000 animate-tilt"></div>
                 <div className="relative bg-white rounded-xl overflow-hidden">
                   <img 
-                    src="src/data/Photos/Manan.png" 
+                    src="/Photos/Manan.png" 
                     alt="Manan Patel" 
                     className="w-full aspect-[4/5] object-cover"
                   />
