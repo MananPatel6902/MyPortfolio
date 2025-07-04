@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { socialData } from '../data/social';
 import {
   Send, Mail, Phone, MapPin,
   Github, Linkedin, Twitter, Instagram, Youtube
 } from 'lucide-react';
+import { socialData } from '../data/social';
 
 const Contact: React.FC = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -19,8 +19,27 @@ const Contact: React.FC = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    setFormSubmitted(true);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const form = e.target as HTMLFormElement;
+    const data = new FormData(form);
+
+    // Convert to URL-encoded format
+    const encodedData = new URLSearchParams(data as any).toString();
+
+    try {
+      await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: encodedData,
+      });
+
+      setFormSubmitted(true);
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    } catch (error) {
+      alert('There was a problem submitting the form. Please try again.');
+    }
   };
 
   const iconMap: Record<string, React.ElementType> = {

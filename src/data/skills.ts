@@ -4,6 +4,7 @@ export const skillsData: Skill[] = [
   // Programming Languages
   { name: "Python", level: 90, category: "Programming Languages" },
   { name: "JavaScript", level: 75, category: "Programming Languages" },
+  { name: "TypeScript", level: 70, category: "Programming Languages" },
   { name: "R", level: 80, category: "Programming Languages" },
   { name: "SQL", level: 85, category: "Programming Languages" },
   { name: "C++", level: 60, category: "Programming Languages" },

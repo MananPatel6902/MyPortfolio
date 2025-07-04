@@ -54,8 +54,12 @@ const Navbar: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-                <a href="#home" className="text-xl font-bold text-purple-500 transition-colors duration-300">
-                Manan's<span className="text-blue-600">Portfolio</span>
+              <a href="#home" className="flex items-center">
+                <img
+                  src="/Photos/logo3.png"
+                  alt="Manan Patel"
+                  className="h-24 w-auto"
+                />
               </a>
             </div>
 
