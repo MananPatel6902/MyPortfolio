@@ -7,7 +7,7 @@ export const projectsData: Project[] = [
     description: "AI-powered multilingual dietitian app that uses real-time food recognition and health metrics to provide personalized nutritional insights.",
     image: "/Photos/SavourSAGE.png",
     tags: ["AI", "LLM", "Streamlit", "Generative AI", "Healthcare"],
-    github: "https://github.com/MananPatel6902/SavourSAGE",
+    github: "https://github.com/MananPatel6902/SavourSAGEE",
     details: "SavourSAGE is a real-time AI-powered dietitian application capable of recognizing food from images, estimating calories with over 90% accuracy, and delivering multilingual recommendations. Built using Streamlit and LLMs, it integrates health metrics for adaptive feedback and employs advanced image processing and generative AI to personalize user guidance."
   },
   {
