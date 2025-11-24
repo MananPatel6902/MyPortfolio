@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Github, Linkedin, Twitter, Instagram, Youtube } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { socialData } from '../data/social';
-import WorkflowLine from './WorkflowLine';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,7 +9,7 @@ const Navbar: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
+      if (window.scrollY > 20) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
@@ -44,98 +44,39 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav 
-      className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white shadow-md' : 'bg-transparent'
-      }`}
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5 }}
+      className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'glass shadow-lg py-2' : 'bg-transparent py-4'
+        }`}
     >
-      <div className="relative">
-        <WorkflowLine />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <a href="#home" className="flex items-center">
-                <img
-                  src="/Photos/logo3.png"
-                  alt="Manan Patel"
-                  className="h-24 w-auto"
-                />
-              </a>
-            </div>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
-              {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className={`text-sm font-medium transition-colors duration-300 ${
-                    isScrolled ? 'text-gray-800 hover:text-blue-600' : 'text-white hover:text-blue-300'
-                  }`}
-                >
-                  {link.name}
-                </a>
-              ))}
-            </div>
-
-            {/* Social Links - Desktop */}
-            <div className="hidden md:flex items-center space-x-4">
-              {socialData.map((social) => {
-                const IconComponent = iconMap[social.icon];
-                return IconComponent ? (
-                  <a
-                    key={social.platform}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`transition-colors duration-300 ${
-                      isScrolled ? 'text-gray-600 hover:text-blue-600' : 'text-white hover:text-blue-300'
-                    }`}
-                    aria-label={social.platform}
-                  >
-                    <IconComponent size={20} />
-                  </a>
-                ) : null;
-              })}
-            </div>
-
-            {/* Mobile menu button */}
-            <div className="md:hidden flex items-center">
-              <button
-                onClick={toggleMenu}
-                className={`text-2xl p-2 rounded-md ${
-                  isScrolled ? 'text-gray-800' : 'text-white'
-                }`}
-                aria-expanded={isOpen}
-                aria-label="Toggle menu"
-              >
-                {isOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile menu */}
-      <div
-        className={`md:hidden bg-white shadow-lg transition-transform duration-300 transform ${
-          isOpen ? 'translate-y-0' : '-translate-y-full'
-        } absolute top-16 left-0 right-0`}
-      >
-        <div className="px-2 pt-2 pb-4 space-y-1">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:text-blue-600 hover:bg-gray-100"
-              onClick={() => setIsOpen(false)}
-            >
-              {link.name}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex items-center">
+            <a href="#home" className="flex items-center group">
+              <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-400 to-secondary-400 group-hover:from-primary-300 group-hover:to-secondary-300 transition-all duration-300">
+                Manan.
+              </span>
             </a>
-          ))}
-          
-          {/* Social Links - Mobile */}
-          <div className="flex items-center space-x-4 px-3 py-2">
+          </div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                className="text-sm font-medium text-gray-300 hover:text-white hover:text-shadow-glow transition-all duration-300 relative group"
+              >
+                {link.name}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-400 transition-all duration-300 group-hover:w-full"></span>
+              </a>
+            ))}
+          </div>
+
+          {/* Social Links - Desktop */}
+          <div className="hidden md:flex items-center space-x-4">
             {socialData.map((social) => {
               const IconComponent = iconMap[social.icon];
               return IconComponent ? (
@@ -144,7 +85,7 @@ const Navbar: React.FC = () => {
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-blue-600"
+                  className="text-gray-400 hover:text-primary-400 transition-colors duration-300 transform hover:scale-110"
                   aria-label={social.platform}
                 >
                   <IconComponent size={20} />
@@ -152,9 +93,64 @@ const Navbar: React.FC = () => {
               ) : null;
             })}
           </div>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden flex items-center">
+            <button
+              onClick={toggleMenu}
+              className="text-gray-300 hover:text-white focus:outline-none"
+              aria-expanded={isOpen}
+              aria-label="Toggle menu"
+            >
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
       </div>
-    </nav>
+
+      {/* Mobile menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden glass border-t border-white/10 overflow-hidden"
+          >
+            <div className="px-4 pt-2 pb-6 space-y-2">
+              {navLinks.map((link) => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {link.name}
+                </a>
+              ))}
+
+              <div className="flex items-center space-x-6 px-3 py-4 mt-4 border-t border-white/10">
+                {socialData.map((social) => {
+                  const IconComponent = iconMap[social.icon];
+                  return IconComponent ? (
+                    <a
+                      key={social.platform}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-400 hover:text-primary-400 transition-colors"
+                      aria-label={social.platform}
+                    >
+                      <IconComponent size={20} />
+                    </a>
+                  ) : null;
+                })}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.nav>
   );
 };
 

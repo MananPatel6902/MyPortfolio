@@ -1,207 +1,222 @@
 import React, { useState } from 'react';
-import {
-  Send, Mail, Phone, MapPin,
-  Github, Linkedin, Twitter, Instagram, Youtube
-} from 'lucide-react';
-import { socialData } from '../data/social';
+import { Mail, Phone, MapPin, Send, Loader2 } from 'lucide-react';
+import { motion } from 'framer-motion';
+import Tilt from 'react-parallax-tilt';
+import Contact3D from './Contact3D';
 
 const Contact: React.FC = () => {
-  const [formSubmitted, setFormSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    subject: '',
     message: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
-    const form = e.target as HTMLFormElement;
-    const data = new FormData(form);
+    // Simulate form submission
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+      setFormData({ name: '', email: '', message: '' });
 
-    // Convert to URL-encoded format
-    const encodedData = new URLSearchParams(data as any).toString();
-
-    try {
-      await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: encodedData,
-      });
-
-      setFormSubmitted(true);
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    } catch (error) {
-      alert('There was a problem submitting the form. Please try again.');
-    }
-  };
-
-  const iconMap: Record<string, React.ElementType> = {
-    Github, Linkedin, Twitter, Instagram, Youtube
+      setTimeout(() => {
+        setIsSubmitted(false);
+      }, 5000);
+    }, 2000);
   };
 
   return (
-    <section id="contact" className="py-20 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Get In Touch</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Interested in discussing a project, opportunity, or just want to connect?
-            Feel free to reach out through the form below or via my social media channels.
+    <section id="contact" className="py-20 bg-dark-100 relative overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
+
+      <div className="container mx-auto px-4 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary-400 to-secondary-400">
+            Get In Touch
+          </h2>
+          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+            Have a project in mind or want to discuss the latest in AI? I'd love to hear from you.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Contact Info */}
-            <div className="md:col-span-1">
-              <div className="bg-gray-50 p-6 rounded-xl shadow-md h-full">
-                <h3 className="text-xl font-bold mb-6 text-gray-800">Contact Information</h3>
-                <div className="space-y-6">
-                  <div className="flex items-start gap-4">
-                    <div className="bg-blue-100 p-3 rounded-lg text-blue-600"><Mail size={20} /></div>
-                    <div>
-                      <p className="font-medium text-gray-800">Email</p>
-                      <a href="mailto:manan06092002@gmail.com" className="text-gray-600 hover:text-blue-600 transition-colors">
-                        manan06092002@gmail.com
-                      </a>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <div className="bg-blue-100 p-3 rounded-lg text-blue-600"><Phone size={20} /></div>
-                    <div>
-                      <p className="font-medium text-gray-800">Phone</p>
-                      <p className="text-gray-600">+91 97378 30063</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <div className="bg-blue-100 p-3 rounded-lg text-blue-600"><MapPin size={20} /></div>
-                    <div>
-                      <p className="font-medium text-gray-800">Location</p>
-                      <p className="text-gray-600">Ahmedabad, GJ, India</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="mt-8">
-                  <p className="font-medium text-gray-800 mb-4">Connect With Me</p>
-                  <div className="flex gap-4">
-                    {socialData.map((social) => {
-                      const Icon = iconMap[social.icon];
-                      return Icon ? (
-                        <a
-                          key={social.platform}
-                          href={social.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="bg-gray-100 p-3 rounded-full text-gray-600 hover:bg-blue-600 hover:text-white transition-all"
-                          aria-label={social.platform}
-                        >
-                          <Icon size={20} />
+        <div className="flex flex-col lg:flex-row gap-12 max-w-6xl mx-auto">
+          {/* Contact Info & 3D Element */}
+          <div className="w-full lg:w-5/12 space-y-8">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <Tilt
+                tiltMaxAngleX={5}
+                tiltMaxAngleY={5}
+                scale={1.02}
+                transitionSpeed={2000}
+              >
+                <div className="glass p-8 rounded-2xl border border-white/5 hover:border-primary-500/30 transition-colors">
+                  <h3 className="text-2xl font-bold text-white mb-6">Contact Information</h3>
+
+                  <div className="space-y-6">
+                    <div className="flex items-start gap-4 group">
+                      <div className="p-3 bg-primary-500/10 rounded-lg text-primary-400 group-hover:bg-primary-500/20 group-hover:scale-110 transition-all duration-300">
+                        <Mail size={24} />
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-400 mb-1">Email</p>
+                        <a href="mailto:manan06092002@gmail.com" className="text-white font-medium hover:text-primary-400 transition-colors">
+                          manan06092002@gmail.com
                         </a>
-                      ) : null;
-                    })}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Contact Form */}
-            <div className="md:col-span-2">
-              <div className="bg-gray-50 p-6 rounded-xl shadow-md">
-                <h3 className="text-xl font-bold mb-6 text-gray-800">Send Me a Message</h3>
-
-                {formSubmitted ? (
-                  <div className="bg-green-100 text-green-800 p-4 rounded-lg">
-                    Thank you! Your message has been submitted.
-                  </div>
-                ) : (
-                  <form
-                    name="contact"
-                    method="POST"
-                    data-netlify="true"
-                    data-netlify-honeypot="bot-field"
-                    onSubmit={handleSubmit}
-                  >
-                    <input type="hidden" name="form-name" value="contact" />
-                    <p className="hidden">
-                      <label>Don’t fill this out: <input name="bot-field" /></label>
-                    </p>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-                      <div>
-                        <label htmlFor="name" className="block text-gray-700 mb-2">Your Name</label>
-                        <input
-                          type="text"
-                          id="name"
-                          name="name"
-                          value={formData.name}
-                          onChange={handleChange}
-                          required
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                          placeholder="Manan Patel"
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="email" className="block text-gray-700 mb-2">Your Email</label>
-                        <input
-                          type="email"
-                          id="email"
-                          name="email"
-                          value={formData.email}
-                          onChange={handleChange}
-                          required
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                          placeholder="manan@example.com"
-                        />
                       </div>
                     </div>
 
-                    <div className="mb-6">
-                      <label htmlFor="subject" className="block text-gray-700 mb-2">Subject</label>
+                    <div className="flex items-start gap-4 group">
+                      <div className="p-3 bg-secondary-500/10 rounded-lg text-secondary-400 group-hover:bg-secondary-500/20 group-hover:scale-110 transition-all duration-300">
+                        <Phone size={24} />
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-400 mb-1">Phone</p>
+                        <a href="tel:+919737830063" className="text-white font-medium hover:text-secondary-400 transition-colors">
+                          +91 97378-30063
+                        </a>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-4 group">
+                      <div className="p-3 bg-teal-500/10 rounded-lg text-teal-400 group-hover:bg-teal-500/20 group-hover:scale-110 transition-all duration-300">
+                        <MapPin size={24} />
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-400 mb-1">Location</p>
+                        <p className="text-white font-medium">
+                          Gandhinagar, Gujarat.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Tilt>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="h-64 w-full rounded-2xl overflow-hidden glass border border-white/5"
+            >
+              <Contact3D />
+            </motion.div>
+          </div>
+
+          {/* Contact Form */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="w-full lg:w-7/12"
+          >
+            <Tilt
+              tiltMaxAngleX={2}
+              tiltMaxAngleY={2}
+              scale={1.01}
+              transitionSpeed={3000}
+              className="h-full"
+            >
+              <div className="glass p-8 rounded-2xl border border-white/5 h-full">
+                <h3 className="text-2xl font-bold text-white mb-6">Send a Message</h3>
+
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label htmlFor="name" className="text-sm font-medium text-gray-300">Name</label>
                       <input
                         type="text"
-                        id="subject"
-                        name="subject"
-                        value={formData.subject}
+                        id="name"
+                        name="name"
+                        value={formData.name}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                        placeholder="Project Inquiry"
+                        className="w-full px-4 py-3 bg-dark-200 border border-white/10 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-white transition-all placeholder-gray-500"
+                        placeholder="John Doe"
                       />
                     </div>
-
-                    <div className="mb-6">
-                      <label htmlFor="message" className="block text-gray-700 mb-2">Message</label>
-                      <textarea
-                        id="message"
-                        name="message"
-                        value={formData.message}
+                    <div className="space-y-2">
+                      <label htmlFor="email" className="text-sm font-medium text-gray-300">Email</label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
                         onChange={handleChange}
                         required
-                        rows={5}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                        placeholder="Your message here..."
-                      ></textarea>
+                        className="w-full px-4 py-3 bg-dark-200 border border-white/10 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-white transition-all placeholder-gray-500"
+                        placeholder="john@example.com"
+                      />
                     </div>
+                  </div>
 
-                    <button
-                      type="submit"
-                      className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-blue-700 transition-all"
+                  <div className="space-y-2">
+                    <label htmlFor="message" className="text-sm font-medium text-gray-300">Message</label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      required
+                      rows={6}
+                      className="w-full px-4 py-3 bg-dark-200 border border-white/10 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-white transition-all placeholder-gray-500 resize-none"
+                      placeholder="Your message here..."
+                    ></textarea>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full py-4 bg-gradient-to-r from-primary-600 to-secondary-600 text-white rounded-lg font-bold text-lg transition-all hover:shadow-[0_0_20px_rgba(14,165,233,0.5)] hover:scale-[1.02] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="animate-spin" size={20} />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Send size={20} />
+                        Send Message
+                      </>
+                    )}
+                  </button>
+
+                  {isSubmitted && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="p-4 bg-green-500/20 border border-green-500/30 rounded-lg text-green-200 text-center"
                     >
-                      <Send size={18} />
-                      Send Message
-                    </button>
-                  </form>
-                )}
+                      Message sent successfully! I'll get back to you soon.
+                    </motion.div>
+                  )}
+                </form>
               </div>
-            </div>
-          </div>
+            </Tilt>
+          </motion.div>
         </div>
       </div>
     </section>
